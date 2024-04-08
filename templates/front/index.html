@@ -1,0 +1,377 @@
+{% extends 'front/base.html' %}
+{% block content  %}
+{% load static %}
+        <!-- Begin Slider Area -->
+        <div class="slider-area">
+
+            <!-- Main Slider -->
+            <div class="swiper-container main-slider swiper-arrow with-bg_white">
+                <div class="swiper-wrapper">
+                    {% for b in banners %}
+                        <div class="swiper-slide animation-style-01">
+                                <div class="slide-inner style-1 bg-height" data-bg-image="{% static 'front/assets/images/slider/bg/1-1.jpg' %}">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-6 order-2 order-lg-1 align-self-center">
+                                                <div class="slide-content text-black">
+                                                    <h2 class="title">{{b.title}}</h2>
+                                                    <p class="short-desc">{{b.body}}</p>
+                                                    {% if b.link %}
+                                                        <div class="btn-wrap">
+                                                            <a class="btn btn-custom-size xl-size btn-pronia-primary" href="{{b.link}}">Kirish</a>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-0 order-1 order-lg-2">
+                                                <div class="inner-img">
+                                                    <div class="scene fill">
+                                                        <div class="expand-width" data-depth="0.2">
+                                                            <img src="{{b.image.url}}" style="width: 524px; height:617px ;" alt="Inner Image">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination d-md-none"></div>
+
+                <!-- Add Arrows -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+
+        </div>
+        <!-- Slider Area End Here -->
+
+        <!-- Begin Product Area -->
+        <div class="product-area section-space-top-100">
+            <div class="container">
+                <div class="section-title-wrap">
+                    <h2 class="section-title mb-0">Mahsulotlar</h2>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="nav product-tab-nav tab-style-1" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="active" id="featured-tab" data-bs-toggle="tab" href="#featured" role="tab" aria-controls="featured" aria-selected="true">
+                                    Barchasi
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a id="bestseller-tab" data-bs-toggle="tab" href="#bestseller" role="tab" aria-controls="bestseller" aria-selected="false">
+                                    Chegirmadagi tavarlar
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="featured" role="tabpanel" aria-labelledby="featured-tab">
+                                <div class="product-item-wrap row">
+                                    {% for product in products %}
+                                    
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="{% url 'front:product_detail' product.code %}">
+                                                    <img class="primary-img" src="{{product.banner_img.url}}" alt="Product Images">
+                                                    <img class="secondary-img" src="{{product.banner_img.url}}" alt="Product Images">
+                                                </a>
+                                                <div class="product-add-action">
+                                                    <ul>
+                                                        <li>
+                                                            
+                                                            {% if product.is_wishlisted %}
+                                                            <a href="{% url 'front:wishlist_delete' product.code %}" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="fa fa-heart"></i>
+                                                            </a>
+                                                            {% else %}
+                                                            <a href="{% url 'front:wishlist_add' product.code %}" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-like"></i>
+                                                            </a>
+
+                                                            {% endif %}
+
+                                              
+                                                        </li>
+                                                        <li >
+                                                            <a href="{% url 'front:product_detail' product.code %}" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-look"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{% url 'front:add_cart_product' product.code %}" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-cart"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <a class="product-name" href="{% url 'front:product_detail' product.code %}">{{product.name}}</a>
+                                                <div class="price-box pb-1">
+                                                    <span class="new-price">{{product.price}}</span>
+                                                </div>
+                                                <div class="rating-box">
+                                                    <ul>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="bestseller" role="tabpanel" aria-labelledby="bestseller-tab">
+                                <div class="product-item-wrap row">
+                                    {% for product in products %}
+                                    {% if product.discount_price %}
+                                    
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="{% url 'front:product_detail' product.code %}">
+                                                    <img class="primary-img" src="{{product.banner_img.url}}" alt="Product Images">
+                                                    <img class="secondary-img" src="{{product.banner_img.url}}" alt="Product Images">
+                                                </a>
+                                                <div class="product-add-action">
+                                                    <ul>
+                                                        <li>
+                                                            
+                                                            {% if product.is_wishlisted %}
+                                                                <a href="{% url 'front:wishlist_delete' product.code %}" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                    <i class="fa fa-heart"></i>
+                                                                </a>
+                                                            {% else %}
+                                                                <a href="{% url 'front:wishlist_add' product.code %}" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                    <i class="pe-7s-like"></i>
+                                                                </a>
+                                                            {% endif %}
+                                                        </li>
+                                                        <li >
+                                                            <a href="{% url 'front:product_detail' product.code %}" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-look"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{% url 'front:add_cart_product' product.code %}" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-cart"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <a class="product-name" href="{% url 'front:product_detail' product.code %}">{{product.name}}</a>
+                                                <div class="price-box pb-1">
+                                                    <span class="new-price">{{product.price}}</span>
+                                                </div>
+                                                <div class="rating-box">
+                                                    <ul>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product Area End Here -->
+
+
+        <!-- Begin Product Area -->
+        <div class="product-area section-space-top-100">
+            <div class="container">
+                <div class="section-title-wrap">
+                    <h2 class="section-title mb-0">Yangi Mahsulotlar</h2><br>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+              
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="featured" role="tabpanel" aria-labelledby="featured-tab">
+                                <div class="product-item-wrap row">
+                                    {% for product in newproducts %}
+                                    
+                                    <div class="col-lg-3 col-md-4 col-sm-6">
+                                        <div class="product-item">
+                                            <div class="product-img">
+                                                <a href="{% url 'front:product_detail' product.code %}">
+                                                    <img class="primary-img" src="{{product.banner_img.url}}" alt="Product Images">
+                                                    <img class="secondary-img" src="{{product.banner_img.url}}" alt="Product Images">
+                                                </a>
+                                                <div class="product-add-action">
+                                                    <ul>
+                                                        <li>
+                                                            
+                                                            {% if product.is_wishlisted %}
+                                                            <a href="{% url 'front:wishlist_delete' product.code %}" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="fa fa-heart"></i>
+                                                            </a>
+                                                            {% else %}
+                                                            <a href="{% url 'front:wishlist_add' product.code %}" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-like"></i>
+                                                            </a>
+
+                                                            {% endif %}
+
+                                              
+                                                        </li>
+                                                        <li >
+                                                            <a href="{% url 'front:product_detail' product.code %}" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-look"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{% url 'front:add_cart_product' product.code %}" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                                <i class="pe-7s-cart"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <a class="product-name" href="{% url 'front:product_detail' product.code %}">{{product.name}}</a>
+                                                <div class="price-box pb-1">
+                                                    <span class="new-price">{{product.price}}</span>
+                                                </div>
+                                                <div class="rating-box">
+                                                    <ul>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Product Area End Here -->
+        <!-- Begin Testimonial Area -->
+        <div class="testimonial-area section-space-top-90 section-space-bottom-95">
+            <div class="container-fluid">
+                <div class="testimonial-bg" data-bg-image="{% static 'front/assets/images/testimonial/bg/1-1-1820x443.jpg' %}">
+                    <div class="section-title-wrap">
+                        <h2 class="section-title">Mijozlar</h2>
+                        <p class="section-desc mb-0">Mijozlarimizning bizga bo'lgan fikrlari
+                        </p>
+                    </div>
+                </div>
+                <div class="container custom-space">
+                    <div class="swiper-container testimonial-slider with-bg">
+                        <div class="swiper-wrapper">
+                            {% for review in reviews %}
+                                <div class="swiper-slide testimonial-item">
+                                        <div class="user-info mb-3">
+                                            <div class="user-shape-wrap">
+                                                <div class="user-img">
+                                                    <img src="{{review.user.avatar.url}}" style="width: 64px;" alt="User Image">
+                                                </div>
+                                            </div>
+                                            <div class="user-content text-charcoal">
+                                                <h4 class="user-name mb-1">{{review.user.usernmae}}</h4>
+                                                <span class="user-occupation">Client</span>
+                                            </div>
+                                        </div>
+                                        <p class="user-comment mb-6">{{review.text}}
+                                        </p>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination without-absolute"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial Area End Here -->
+
+
+        <!-- Begin Brand Area -->
+        <div class="brand-area section-space-bottom-100">
+            <div class="container">
+                <div class="brand-bg" data-bg-image="{% static 'front/assets/images/brand/bg/1-1170x300.jpg' %}">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="swiper-container brand-slider">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <a class="brand-item" href="https://najottalim.uz/">
+                                            <img src="{% static 'front/assets/images/brand/1.png' %}" alt="Brand Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a class="brand-item" href="https://alifshop.uz/uz">
+                                            <img src="{% static 'front/assets/images/brand/2.png' %}" alt="Brand Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a class="brand-item" href="https://evos.uz/">
+                                            <img src="{% static 'front/assets/images/brand/3.png' %}" alt="Brand Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a class="brand-item" href="https://mohirdev.uz/">
+                                            <img src="{% static 'front/assets/images/brand/4.png' %}" alt="Brand Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a class="brand-item" href="https://tuit.uz/">
+                                            <img src="{% static 'front/assets/images/brand/5.png' %}" alt="Brand Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a class="brand-item" href="https://merchants.uzumbank.uz/ru/">
+                                            <img src="{% static 'front/assets/images/brand/6.png' %}" alt="Brand Image">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Brand Area End Here -->
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'front/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content">
+    <div class="breadcrumb-area breadcrumb-height" data-bg-image="assets/images/breadcrumb/bg/1-1-1919x388.jpg" style="background-image: url(&quot;assets/images/breadcrumb/bg/1-1-1919x388.jpg&quot;);">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-item">
+                        <h2 class="breadcrumb-heading">Savat</h2>
+                        <ul>
+                            <li>
+                                <a href="{% url 'front:index' %}">Asosiy</a>
+                            </li>
+                            <li>Joriy Savat</li>
+                        </ul>
+                        <a class="btn btn-custom-size xl-size btn-pronia-primary" style="margin-top: 20px;" href="{% url 'front:cart_list' %}">Savatlar tarixi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-area section-space-y-axis-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    
+                        <div class="table-content table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product_remove">O'chirish</th>
+                                        <th class="product-thumbnail">Rasm</th>
+                                        <th class="cart-product-name">Maxsulot</th>
+                                        <th class="product-price">Tan Narxi</th>
+                                        <th class="product-quantity">Soni</th>
+                                        <th class="product-subtotal">Narxi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in queryset %}
+                                    <tr>
+                                        <td class="product_remove">
+                                            <a href="{% url 'front:cart_product_delete' i.id %}">
+                                                <i class="pe-7s-close" data-tippy="Remove" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" tabindex="0"></i>
+                                            </a>
+                                        </td>
+                                        <td class="product-thumbnail">
+                                            <a href="#">
+                                                <img src="{{i.product.banner_img.url}}" alt="Cart Thumbnail" style="width: 100px;">
+                                            </a>
+                                        </td>
+                                        <td class="product-name"><a href="#">{{i.product.name}}</a></td>
+                                        <td class="product-price"><span class="amount">{{i.product.price}}</span></td>
+                                        {% if cart.status == 1 %}
+                                        <td class="quantity">
+                                            <form method="post" action="{% url 'front:update_qtty' i.id %}">{% csrf_token %}
+                                                <div class="cart-plus-minus">
+                                                    <input class="cart-plus-minus-box" name="count" value="{{i.count}}" type="text">
+                                                    <div type="submit" class="dec qtybutton" >
+                                                        <i class="fa fa-minus"></i>
+                                                    </div>
+                                                    <div class="inc qtybutton">
+                                                        <i class="fa fa-plus"></i>
+                                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                <button type="submit" class="btn btn-pronia-primary" style="margin-top: 2px; font-size: 14px;">Qo'llash</button>
+                                            </form>
+                                        </td>
+                                        
+
+                                        {% else %}
+                                        <td class="product-subtotal"><span class="amount">{{i.count}}</span></td>
+                                        {% endif %}
+                                        <td class="product-subtotal"><span class="amount">{{i.price}}</span></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if cart.status == 1 and queryset|length != 0 %}
+                        <div class="row">
+                            <div class="col-12">
+                                
+                                <div class="coupon-all">
+                                    <div class="coupon2">
+                  
+                                        <div data-bs-toggle="modal" data-bs-target="#quickModal">
+                                            <a href="#" class="btn btn-secondary" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                Buyurtma berish
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-5 ml-auto">
+                                <div class="cart-page-total">
+                                    <h2>Savat narxi</h2>
+                                    <ul>
+                                        <li>Chegirma qilingan narx <span>{{cart.price}}</span></li>
+                                        <li>Umumiy Narx <span>{{cart.total_price}}</span></li>
+                                    </ul>
+                                    <a href="#">Chek chiqarish</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+        <!-- Begin Modal Area -->
+        <div class="modal quick-view-modal fade" id="quickModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered d-flex justify-content-center">
+                <div class="modal-content" style="width: 430px; height: 280px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="quickModal">Buyurtmani tasdiqlash</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                        </button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="modal-wrap row">
+                            <h5>Tavarlar turi: <span>{{queryset|length }}</span></h5><br>
+                            <h5>To'lo'v summasi: <span>{{ cart.price }}</span></h5><br><br><br>
+                            
+                            <div  style="display: flex;justify-content: space-around ;">
+                                <button  type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                    Ortga
+                                </button>
+                                
+                                <a href="{% url 'front:product_order' %}" class="btn btn-secondary" id="buyurtma-berish"> Buyurtma berish </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Area End Here -->
+
+{% endblock content %}
+    
